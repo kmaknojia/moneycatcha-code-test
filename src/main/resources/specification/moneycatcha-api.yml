@@ -1,0 +1,64 @@
+openapi: 3.0.2
+info:
+  title: Moneycatcha-Api
+  description: MoneyCatcha Code Task 
+  version: 1.0.0
+  
+
+paths:
+  /v1/resource/count-characters:
+   get:
+     tags:
+       - countCharacters
+     summary: "Count number of Occurences of the char in a String"
+     operationId: countCharacters
+     parameters: 
+      - in: query
+        name: words
+        required: true
+        schema:
+          type: array
+          additionalProperties: false
+          items:
+            type: string
+      - in: query
+        name: match
+        required: true
+        schema:
+          type: string  
+          pattern: ^[a-zA-Z0-9]+$
+          minLength: 1
+          maxLength: 1
+     responses:
+       '200':
+        description: success
+        content:
+          application/json:
+           schema:
+             $ref: '#/components/schemas/SuccessResponse'
+       '400':
+          description: Bad request.
+          content:
+           application/json:
+            schema:
+             $ref: '#/components/schemas/Error'
+  
+components:
+  
+  schemas:
+    SuccessResponse:
+      type: object
+      properties:
+        occurrence:
+          type: integer
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string   
